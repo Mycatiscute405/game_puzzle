@@ -1,25 +1,38 @@
-:root{
-  --size-block: 80px;
-  
-}
-.App {
-  text-align: center;
+$SIZE_BLOCK: 80px;
+$COLOR_BLOCK: #64646475;
+$COLOR_BLOCK_RIGHT: #ff6868;
+
+body {
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none
 }
 
+#App {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+// block
 .block-row {
   .block {
     cursor: pointer;
     display: inline-block;
-    width: var(--size-block);
-    height: var(--size-block);
-    background: #64646475;
+    width: $SIZE_BLOCK;
+    height: $SIZE_BLOCK;
+    background: $COLOR_BLOCK;
     margin: 1px;
-    line-height: var(--size-block);
+    line-height: $SIZE_BLOCK;
   }
   .block-v0 {
     visibility: hidden;
   }
   .block-right{
-    background: rgb(255, 104, 104);
+    transition: all 0.5s;
+    background: $COLOR_BLOCK_RIGHT;
   }
 }
