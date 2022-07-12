@@ -1,3 +1,7 @@
+:root{
+  --size-block: 80px;
+  
+}
 .App {
   text-align: center;
 }
@@ -6,13 +10,16 @@
   .block {
     cursor: pointer;
     display: inline-block;
-    width: 50px;
-    height: 50px;
+    width: var(--size-block);
+    height: var(--size-block);
     background: #64646475;
     margin: 1px;
-    line-height: 50px;
+    line-height: var(--size-block);
   }
   .block-v0 {
     visibility: hidden;
+  }
+  .block-right{
+    background: rgb(255, 104, 104);
   }
 }

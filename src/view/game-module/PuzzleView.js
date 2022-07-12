@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const oneSideBlock = 4;
 const numArr = [];
 const expArr = [];
-const list = {};
 for (let idx = 1; idx < Math.pow(oneSideBlock, 2); idx++) {
   numArr.push(idx);
 }
@@ -16,23 +15,34 @@ for (let idx = 1; idx < Math.pow(oneSideBlock, 2); idx++) {
   numArr.splice(numArr.indexOf(numArr[t]), 1);
 }
 expArr.unshift(0);
-for (let idx = 0; idx < Math.pow(oneSideBlock, 2); idx++) {
-  list[idx] = expArr[idx];
+
+let zeroIndex = 0;
+let clickableBlockIndex = [] 
+const findClickableBlock = () => {
+  zeroIndex = expArr.indexOf(0)
+  clickableBlockIndex = [zeroIndex - 4, zeroIndex + 4, zeroIndex - 1, zeroIndex + 1]
 }
-// value값이 0인 위치의 key값 구하기
-// 구한 key값을 기준으로 네방향의 key값 구하기
-// let zero = 0;
-// let selection = {
-//   up: zero - 4 >= 0 ? zero - 4 : -1,
-//   down: zero + 4 <= 15 ? zero + 4 : -1,
-//   left: zero - 1 >= 0 ? zero - 1 : -1,
-//   right: zero + 1 <= 15 ? zero + 1 : -1,
-// };
 
 const PuzzleView = () => {
+  const [count, setCount] = useState(0)
+  useEffect(() => {
+    findClickableBlock()
+    }, [count]
+  )
+
   const onClickBlock = (e) => {
-    const t = e.target.className.split(' ')[1].slice(7);
-    console.log(t);
+    const clickedBlockIndex = Number(e.target.className.split(' ')[1].slice(7))
+    if (clickedBlockIndex % oneSideBlock === 0) {
+      clickableBlockIndex[3] = -1
+    } else if (clickedBlockIndex % oneSideBlock === 3) {
+      clickableBlockIndex[2] = -1
+    }
+      if (clickableBlockIndex.indexOf(clickedBlockIndex) >= 0) {
+        const temp = expArr[clickedBlockIndex]
+        expArr[clickedBlockIndex] = 0
+        expArr[zeroIndex] = temp
+        setCount(count + 1)
+      }
   };
   const setBlock = () => {
     const arr = [];
@@ -51,20 +61,29 @@ const PuzzleView = () => {
     for (let idx = 0; idx < oneSideBlock; idx++) {
       arr.push(
         <span
-          className={`block block-k${Object.keys(list)[k]} block-v${
-            Object.values(list)[k]
-          }`}
+          className={`block block-i${k} block-v${
+            expArr[k]
+          } ${ k + 1 === expArr[k]? 'block-right':''}`}
           onClick={onClickBlock}
           key={idx}
         >
-          {`${Object.values(list)[k]}`}
+          {expArr[k]}
         </span>
       );
       k++;
     }
     return arr;
   };
-  return <div>{setBlock()}</div>;
+  return(
+    <div>
+      <div>
+        {setBlock()}
+      </div>
+      <div>
+        {count}
+      </div>
+    </div>
+  );
 };
 
 export default PuzzleView;
